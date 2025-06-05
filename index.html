@@ -6,6 +6,10 @@
     <title>Students</title>
 </head>
 <body>
+    <select id="selectAClass" onchange="enrolledStudents(this.value)">
+        <option value="">Select a class</option>
+    </select>
+    <p>Results:</p>
     <div id="results"></div>
     <script src="script.js"></script>
 </body>

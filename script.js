@@ -21,26 +21,108 @@ const students = [
   { name: "Tina Zhang", socialId: "SID020", birthDate: "2004-11-05", friends: ["SID019"], classes: ["English", "Art", "History"] }
 ];
 
-function displayResult(name, resultString) {
+let uniqueClasses = [];
+
+function main() {
+    mostFriends();
+    addUniqueClasses();
+    addUniqueClassesToCombo();
+};
+main();
+
+function displayResult(name, result) {
     let results = document.getElementById('results');
     let newParagraph = document.createElement('p');
-    newParagraph.textContent = `${name}: ${resultString}`;
+
+    // Result is a string
+    if (typeof result === 'string') {
+        newParagraph.textContent = `${name}: ${result}`;
+
+    // Result is a HTML element
+    } else if (result instanceof HTMLElement) {
+        let temp = document.createElement('span');
+        temp.textContent = name + ': ';
+        newParagraph.appendChild(temp);
+        newParagraph.appendChild(result);
+
+    } else {
+        console.error('Unknown result type');
+    }
+    
     results.appendChild(newParagraph);
 }
 
-function mostFriends(student) {
-    for (let key of Object.keys(student)) {
-        if (key === 'friends') {
-            // check every friends key's value length, return the longest
-            friends.value.length
+function mostFriends() {
+    let friendliest = students[0];
+    for (let i = 1; i < students.length; i++) {
+        if (students[i].friends.length > friendliest.friends.length) {
+            friendliest = students[i];
         }
+    }
+
+    displayResult('Most friends', friendliest.name);
+}
+
+function addUniqueClasses() {
+    for (let i = 0; i < students.length; i++) {
+        let actStudent = students[i];
+
+        for (let j = 0; j < actStudent.classes.length; j++) {
+            let actClass = actStudent.classes[j];
+
+            if (uniqueClasses.includes(actClass) === false) {
+                uniqueClasses.push(actClass);
+            }
+        }
+    }
+
+    // Make a list of classes
+    let unorderedList = document.createElement('ul');
+    for (let i = 0; i < uniqueClasses.length; i++) {
+        let listItem = document.createElement('li');
+        listItem.innerText = uniqueClasses[i];
+        unorderedList.appendChild(listItem);
+    }
+
+    displayResult('Unique classes', unorderedList);
+} 
+
+function addUniqueClassesToCombo() {
+    const select = document.getElementById('selectAClass');
+
+    for(let i = 0; i < uniqueClasses.length; i++) {
+        let option = document.createElement('option'),
+            uniqueClass = uniqueClasses[i];
+
+        option.value = uniqueClass;
+        option.textContent = uniqueClass;
+        select.appendChild(option);
     }
 }
 
-students.find(mostFriends);
-
-function createList(classname) {
-    let listItem = document.createElement('li');
-    listItem.textContent = `${classname}`;
+function enrolledStudents(selectedClass) {
     
-} 
+    console.log('Enrolled students in this class:', )
+
+}
+
+
+function test() {
+    var myFunc = function(value, index, array) {
+        console.log(value, index);
+    }
+
+    // uniqueClasses.forEach(myFunc);
+
+    uniqueClasses.forEach( value => {
+        console.log(value);
+    });
+
+    // for(let i=0; i < uniqueClasses.length; i++) {
+    //     let uniqueClass = uniqueClasses[i];
+        
+    //     myFunc(uniqueClass, i, uniqueClasses);
+    // }
+}
+
+
