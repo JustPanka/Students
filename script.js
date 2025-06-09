@@ -22,11 +22,13 @@ const students = [
 ];
 
 let uniqueClasses = [];
+let uniqueNames = [];
 
 function main() {
     mostFriends();
     addUniqueClasses();
     addUniqueClassesToCombo();
+    addUniqueNamesToCombo();
 };
 main();
 
@@ -100,29 +102,80 @@ function addUniqueClassesToCombo() {
     }
 }
 
-function enrolledStudents(selectedClass) {
-    
-    console.log('Enrolled students in this class:', )
+// function test() {
+//     var myFunc = function(value, index, array) {
+//         console.log(value, index);
+//     }
 
-}
+//     // uniqueClasses.forEach(myFunc);
+//     uniqueClasses.forEach( value => {
+//         console.log(value);
+//     });
 
-
-function test() {
-    var myFunc = function(value, index, array) {
-        console.log(value, index);
-    }
-
-    // uniqueClasses.forEach(myFunc);
-
-    uniqueClasses.forEach( value => {
-        console.log(value);
-    });
-
-    // for(let i=0; i < uniqueClasses.length; i++) {
-    //     let uniqueClass = uniqueClasses[i];
+//     // for(let i=0; i < uniqueClasses.length; i++) {
+//     //     let uniqueClass = uniqueClasses[i];
         
-    //     myFunc(uniqueClass, i, uniqueClasses);
-    // }
+//     //     myFunc(uniqueClass, i, uniqueClasses);
+//     // }
+// }
+
+function enrolledStudents(selectedClass) {
+    console.log('Enrolled students in this class:', selectedClass);
+
+    // empty array for students who have the class
+    let studentsEnrolled = [];
+    // go through students
+    for (let i = 0; i < students.length; i++) {
+        // go through classes
+        for (let j = 0; j < students[i].classes.length; j++) {
+            // if selectedClass is in the student's classes
+            if (students[i].classes[j] === selectedClass) {
+                // push student name into array
+                studentsEnrolled.push(students[i].name);
+            }
+        }    
+    }
+    // write out array
+    console.log(studentsEnrolled);
 }
 
+function addUniqueNamesToCombo() {
+    // for (let i = 0; i < students.length; i++) {
+    //     const name = students[i].name;
+    //     uniqueNames.push(name);
+    // }
 
+    // uniqueNames = students.map( student => {
+    //     return student.name;
+    // });
+
+    uniqueNames = students.map( student => student.name );
+
+    const select1 = document.getElementById('selectAName');
+    const select2 = document.getElementById('selectAnotherName');
+
+    for (let i = 0; i < uniqueNames.length; i++) {
+        let option = document.createElement('option'),
+            clone = option.cloneNode(true),
+            uniqueName = uniqueNames[i];
+
+        option.value = uniqueName;
+        option.textContent = uniqueName;
+        clone.value = uniqueName;
+        clone.textContent = uniqueName;
+        select1.appendChild(option);
+        select2.appendChild(clone);
+    }
+}
+
+function commonFriends() {
+    let selectedStudent1,
+        selectedStudent2;
+        
+    // go through selected student's friends
+    for (let i = 0; i < students[i].friends.length; i++) {
+
+    }
+    // check if they have common friends
+        // if yes, console log
+}
