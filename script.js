@@ -168,14 +168,57 @@ function addUniqueNamesToCombo() {
     }
 }
 
-function commonFriends() {
-    let selectedStudent1,
-        selectedStudent2;
-        
-    // go through selected student's friends
-    for (let i = 0; i < students[i].friends.length; i++) {
+function selectStudents() {
+    const name1 = document.getElementById('selectAName'),
+          name2 = document.getElementById('selectAnotherName');
+    let selectedStudent1value = name1.value,
+        selectedStudent2value = name2.value;
 
+    if (selectedStudent1value == '' || selectedStudent2value == '' ) {
+        return;
     }
-    // check if they have common friends
-        // if yes, console log
+
+    var student1,
+        student2;
+
+    // go through students, if student[i]'s name === selectedStudent1value, (s)he is student1, else if student[i]'s name === selectedStudent2value, (s)he is student2
+    for (let i = 0; i < students.length; i++) {
+        if (students[i].name === selectedStudent1value) {
+            student1 = students[i];
+        } else if (students[i].name === selectedStudent2value) {
+            student2 = students[i];
+        }
+    }
+
+    return student1, student2;
+}
+
+function commonFriends() {
+    selectStudents();
+    let commonFriendsIDs = [];
+
+    // go through each student1's friends, check if these elements are included in student2's friends, if yes console them in commonFriends array
+    student1.friends.forEach(friend => {
+        if (student2.friends.includes(friend)) {
+            commonFriendsIDs.push(friend);
+        }
+    });
+
+    console.log(commonFriendsIDs);
+
+    let commonFriendsNames = []; 
+
+    // check in students.socialID which commonFriends ID goes to which name
+    students.forEach(student => {
+        if (commonFriendsIDs.includes(student.socialId)) {
+            commonFriendsNames.push(student.name);
+        }
+    });
+
+    const commonFriendsNamesResult = commonFriendsNames.join(', ');
+    displayResult('Common friends', commonFriendsNamesResult);
+}
+
+function commonClasses() {
+    
 }
