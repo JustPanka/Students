@@ -23,6 +23,7 @@ const students = [
 
 let uniqueClasses = [];
 let uniqueNames = [];
+let selectedStudentsClasses = [];
 
 function main() {
     mostFriends();
@@ -190,16 +191,24 @@ function selectStudents() {
         }
     }
 
-    return student1, student2;
+    return {
+        student1,
+        student2
+    };
 }
 
 function commonFriends() {
-    selectStudents();
+    var selectedStudents = selectStudents();
     let commonFriendsIDs = [];
 
+    // if selectedStudents undefined, return
+    if (selectedStudents == undefined) {
+        return;
+    } 
+
     // go through each student1's friends, check if these elements are included in student2's friends, if yes console them in commonFriends array
-    student1.friends.forEach(friend => {
-        if (student2.friends.includes(friend)) {
+    selectedStudents.student1.friends.forEach(friend => {
+        if (selectedStudents.student2.friends.includes(friend)) {
             commonFriendsIDs.push(friend);
         }
     });
@@ -220,5 +229,97 @@ function commonFriends() {
 }
 
 function commonClasses() {
+    var selectedStudents = selectStudents();
+    let commonClasses = [];
+
+    // if selectedStudents undefined, return
+    if (selectedStudents == undefined) {
+        return;
+    } 
+
+    // go through each student1's classes, check if these are included in student2's classes, if yes display them
+    selectedStudents.student1.classes.forEach(currentClass => {
+        if (selectedStudents.student2.classes.includes(currentClass)) {
+            commonClasses.push(currentClass);
+        }
+    });
+
+    console.log(commonClasses);
+
+    const commonClassesResult = commonClasses.join(', ');
+    displayResult('Common classes', commonClassesResult);
+}
+
+function allClasses() {
+    var selectedStudents = selectStudents();
+
+    // if selectedStudents undefined, return
+    if (selectedStudents == undefined) {
+        return;
+    } 
+
+    selectedStudents.student1.classes.forEach(currentClass => {
+        if (!selectedStudentsClasses.includes(currentClass)) {
+            selectedStudentsClasses.push(currentClass);
+        }
+    })
+
+    selectedStudents.student2.classes.forEach(currentClass => {
+        if (!selectedStudentsClasses.includes(currentClass)) {
+            selectedStudentsClasses.push(currentClass);
+        }
+    })
+
+    console.log(selectedStudentsClasses);
+
+    displayResult('All classes', selectedStudentsClasses.join(', '));
+}
+
+function notEnrolledClasses() {
+    var selectedStudents = selectStudents();
+    let notEnrolledClasses = [];
+
+    // if selectedStudents undefined, return
+    if (selectedStudents == undefined) {
+        return;
+    } 
+
+    // find classes that are part of uniqueClasses but not selectedStudentsClasses, push to notEnrolledClasses, then display
+    uniqueClasses.forEach(currentClass => {
+        if (!selectedStudentsClasses.includes(currentClass)) {
+            notEnrolledClasses.push(currentClass);
+        }
+   })
+
+   console.log(notEnrolledClasses);
+
+   displayResult('Not enrolled classes', notEnrolledClasses.join(', '));
+}
+
+function classesOfTheirFriends() {
+    var selectedStudents = selectStudents();
+    let allTheirFriends = selectedStudents.student1.friends.concat(selectedStudents.student2.friends);
+    let classesOfTheirFriends = [];
+
+    if (selectedStudents == undefined) {
+        return;
+    } 
+
+    //display classes that are in friends' classes array, but not in selectedStudentsClasses
     
+    // allTheirFriends.classes.forEach(currentClass => {
+    //     if (!selectedStudentsClasses.includes(currentClass)) {
+    //         classesOfTheirFriends.push(currentClass);
+    //     }
+    // })
+
+    console.log(classesOfTheirFriends);
+}
+
+function selectedStudents() {
+    commonFriends();
+    commonClasses();
+    allClasses();
+    notEnrolledClasses();
+    classesOfTheirFriends();
 }
