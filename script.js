@@ -24,6 +24,7 @@ const students = [
 let uniqueClasses = [];
 let uniqueNames = [];
 let selectedStudentsClasses = [];
+let notEnrolledClasses = [];
 
 function main() {
     mostFriends();
@@ -275,9 +276,8 @@ function allClasses() {
     displayResult('All classes', selectedStudentsClasses.join(', '));
 }
 
-function notEnrolledClasses() {
+function displayNotEnrolledClasses() {
     var selectedStudents = selectStudents();
-    let notEnrolledClasses = [];
 
     // if selectedStudents undefined, return
     if (selectedStudents == undefined) {
@@ -297,29 +297,71 @@ function notEnrolledClasses() {
 }
 
 function classesOfTheirFriends() {
+    // array of objects
     var selectedStudents = selectStudents();
-    let allTheirFriends = selectedStudents.student1.friends.concat(selectedStudents.student2.friends);
-    let classesOfTheirFriends = [];
 
     if (selectedStudents == undefined) {
         return;
     } 
 
-    //display classes that are in friends' classes array, but not in selectedStudentsClasses
+    //socialID array
+    let allTheirFriendsIDs = [];
+    selectedStudents.student1.friends.forEach(friend => {
+        if (!allTheirFriendsIDs.includes(friend)) {
+            allTheirFriendsIDs.push(friend);
+        }
+    })
+
+    selectedStudents.student2.friends.forEach(friend => {
+        if (!allTheirFriendsIDs.includes(friend)) {
+            allTheirFriendsIDs.push(friend);
+        }
+    })
+
+    console.log(allTheirFriendsIDs);
+
+    let allTheirFriends = [];
+
+    // go through students, match allTheirFriendsIDs to students
+    students.forEach(student => {
+        if (allTheirFriendsIDs.includes(student.socialId)) {
+            allTheirFriends.push(student);
+        }
+    })
+
+    console.log(allTheirFriends);
+
+    let classesOfTheirFriends = [];
     
-    // allTheirFriends.classes.forEach(currentClass => {
-    //     if (!selectedStudentsClasses.includes(currentClass)) {
-    //         classesOfTheirFriends.push(currentClass);
-    //     }
-    // })
+    // go through their classes, push them to classesOfTheirFriends (without duplication)
+    allTheirFriends.forEach(friend => {
+        friend.classes.forEach(currentClass => {
+            if (!classesOfTheirFriends.includes(currentClass)) {
+                classesOfTheirFriends.push(currentClass);
+            }
+        });
+    });
 
     console.log(classesOfTheirFriends);
+
+    let onlyTheClassesOfTheirFriends = [];
+
+    //display classes that are in classesOfTheirFriends & notEnrolledClasses (without duplication)
+    notEnrolledClasses.forEach(currentClass => {
+        if (classesOfTheirFriends.includes(currentClass)) {
+            onlyTheClassesOfTheirFriends.push(currentClass);
+        }
+    })
+
+    console.log(onlyTheClassesOfTheirFriends);
+
+    displayResult('Classes of their friends', onlyTheClassesOfTheirFriends.join(', '));
 }
 
 function selectedStudents() {
     commonFriends();
     commonClasses();
     allClasses();
-    notEnrolledClasses();
+    displayNotEnrolledClasses();
     classesOfTheirFriends();
 }
